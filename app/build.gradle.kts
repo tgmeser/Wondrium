@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("androidx.navigation.safeargs.kotlin")
 
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 
 }
 
@@ -21,6 +24,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        //noinspection DataBindingWithoutKapt
         dataBinding = true
     }
     buildTypes {
@@ -64,13 +68,12 @@ dependencies {
 
     // Glide
     implementation ("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    kapt("com.github.bumptech.glide:compiler:4.12.0")
 
-    val hilt_version = "2.38.1"
-    implementation ("com.google.dagger:hilt-android:$hilt_version")
 
-    val hilt_viewmodels = "1.0.0-alpha03"
-    implementation ("androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodels")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+
 
     // Activity KTX for viewModels()
     implementation ("androidx.activity:activity-ktx:1.3.1")
@@ -92,6 +95,17 @@ dependencies {
 
     // Lifecycle
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.7.0")
+
+    val nav_version = "2.7.7"
+
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    
+}
+kapt {
+    correctErrorTypes = true
 }

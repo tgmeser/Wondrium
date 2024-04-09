@@ -5,13 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.babyapps.wondrium.data.model.Product
+import com.babyapps.wondrium.data.model.course.Product
 import com.babyapps.wondrium.databinding.ItemCourseBinding
+import com.bumptech.glide.Glide
 
-class CoursesAdapter : RecyclerView.Adapter<CoursesAdapter.ArticleViewHolder>() {
+class CoursesAdapter : RecyclerView.Adapter<CoursesAdapter.CourseViewHolder>() {
 
-    inner class ArticleViewHolder(val binding: ItemCourseBinding) :
+    inner class CourseViewHolder(val binding: ItemCourseBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bindImage(product: Product) {
+            binding.apply {
+                Glide.with(itemView)
+                    .load("https://secureimages.teach12.com/tgc/images/m2/wondrium/courses/${product.course_id}/portrait/${product.course_id}.jpg")
+                    .into(ivProductImage)
+            }
+        }
     }
 
     val diffCallback = object : DiffUtil.ItemCallback<Product>() {
@@ -32,19 +40,20 @@ class CoursesAdapter : RecyclerView.Adapter<CoursesAdapter.ArticleViewHolder>() 
 
     val differ = AsyncListDiffer(this, diffCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder =
-        ArticleViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder =
+        CourseViewHolder(
             ItemCourseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
         val product = differ.currentList[position]
 
         holder.binding.apply {
-            tvCourseName.text = product.course_name
-            tvContentBrand.text = product.content_brand
-            tvClassification.text = product.content_classification        }
-
+            tvCourseName.text = "Course name : " + product.course_name
+            tvContentBrand.text = "Content brand : " + product.content_brand
+            tvClassification.text = "Classification : " + product.content_classification
+        }
+        holder.bindImage(product)
         holder.binding.root.setOnClickListener { onItemClickListener?.let { it(product) } }
     }
 

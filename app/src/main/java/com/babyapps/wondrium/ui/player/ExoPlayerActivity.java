@@ -1,13 +1,9 @@
 package com.babyapps.wondrium.ui.player;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.fragment.app.Fragment;
-
-import com.babyapps.wondrium.databinding.FragmentExoPlayerBinding;
+import androidx.appcompat.app.AppCompatActivity;
+import com.babyapps.wondrium.databinding.ActivityExoPlayerBinding;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -15,48 +11,34 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 
-public class ExoPlayerFragment extends Fragment {
-    private FragmentExoPlayerBinding binding;
-    private ExoPlayer exoPlayer = null;
-    private Long playbackPosition = 0L;
-
+public class ExoPlayerActivity extends AppCompatActivity {
+    private ActivityExoPlayerBinding binding;
+    private ExoPlayer exoPlayer;
+    private long playbackPosition = 0L;
     private boolean playWhenReady = true;
-
-    public ExoPlayerFragment() {
-        // Required empty public constructor
-    }
-
-
-    public static ExoPlayerFragment newInstance(String param1, String param2) {
-        ExoPlayerFragment fragment = new ExoPlayerFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    String videoUrl1;
+    String videoUrl2;
+    String videoUrl3;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityExoPlayerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        videoUrl1 = getIntent().getStringExtra("VIDEO_URL_TO_PLAY_1");
+        videoUrl2 = getIntent().getStringExtra("VIDEO_URL_TO_PLAY_2");
+        videoUrl3 = getIntent().getStringExtra("VIDEO_URL_TO_PLAY_3");
+
         prepareExoplayer();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        binding = FragmentExoPlayerBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
     private void prepareExoplayer() {
-        exoPlayer = new SimpleExoPlayer.Builder(requireContext()).build();
+        exoPlayer = new SimpleExoPlayer.Builder(this).build();
         exoPlayer.setPlayWhenReady(true);
         binding.playerView.setPlayer(exoPlayer);
 
         HttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
-        MediaItem mediaItem = MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/\n" +
-                "BigBuckBunny.mp4");
+        Uri videoUri = Uri.parse(videoUrl3);
+        MediaItem mediaItem = MediaItem.fromUri(videoUri);
         ProgressiveMediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(mediaItem);
 
@@ -75,22 +57,20 @@ public class ExoPlayerFragment extends Fragment {
         }
     }
 
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    protected void onDestroy() {
+        super.onDestroy();
         releasePlayer();
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
         releasePlayer();
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
         releasePlayer();
     }

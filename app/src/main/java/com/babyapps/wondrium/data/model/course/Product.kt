@@ -1,4 +1,4 @@
-package com.babyapps.wondrium.data.model
+package com.babyapps.wondrium.data.model.course
 
 data class Product(
     val content_blacklist: String,

@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.babyapps.wondrium.data.model.Course
-import com.babyapps.wondrium.data.model.Product
+import com.babyapps.wondrium.data.model.course.Product
 import com.babyapps.wondrium.data.repository.WondriumRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

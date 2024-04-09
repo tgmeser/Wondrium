@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/coursesFragment">
+
+    <fragment
+        android:id="@+id/coursesFragment"
+        android:name="com.babyapps.wondrium.ui.courses.CoursesFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_courses">
+        <action
+            android:id="@+id/action_coursesFragment_to_lectureFragment"
+            app:destination="@id/lectureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lectureFragment"
+        android:name="com.babyapps.wondrium.ui.lectures.LectureFragment"
+        android:label="LectureFragment" >
+        <action
+            android:id="@+id/action_lectureFragment_to_exoplayerFragment"
+            app:destination="@id/exoplayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exoplayerFragment"
+        android:name="com.babyapps.wondrium.ui.player.ExoPlayerFragment"
+        android:label="ExoPlayerFragment" />
+</navigation>
